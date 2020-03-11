@@ -1,0 +1,34 @@
+{
+"explorer":
+{
+	"setsAns":false,
+	"inputs":
+	[
+		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.mlx,*.mdl,*.mat,*.tex,*.tikz"], ["char"]], "multiplicity":"append"}
+	]
+},
+"compare":
+{
+	"setsAns":false,
+	"inputs":
+	[
+		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.mlx,*.mdl,*.mat,*.tex,*.tikz"], ["char"]], "multiplicity":"append"}
+	]
+},
+"notepadpp":
+{
+	"setsAns":false,
+	"inputs":
+	[
+		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.tex,*.tikz"], ["identifier=package,classdef"], ["char"]], "multiplicity":"append"}
+	]
+},
+"vscode":
+{
+	"setsAns":false,
+	"inputs":
+	[
+		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.tex,*.tikz"], ["identifier=package,classdef"], ["char"]], "multiplicity":"append"}
+	]
+},
+}

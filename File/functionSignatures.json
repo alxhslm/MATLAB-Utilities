@@ -1,0 +1,18 @@
+{
+"cdf":
+{
+	"setsAns":false,
+	"inputs":
+	[
+		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.mlx,*.mdl,*.mat,*.tex,*.tikz"], ["char"]]}
+	]
+},
+"when":
+{
+	"setsAns":false,
+	"inputs":
+	[
+		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.mlx,*.mdl,*.mat"], ["char"]]}
+	]
+}
+}
