@@ -23,12 +23,12 @@
 		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.tex,*.tikz"], ["identifier=package,classdef"], ["char"]], "multiplicity":"append"}
 	]
 },
-"vscode":
+"code":
 {
 	"setsAns":false,
 	"inputs":
 	[
 		{"name":"file", "kind":"optional", "type":[["filepath"], ["matlabpath=*.m,*.tex,*.tikz"], ["identifier=package,classdef"], ["char"]], "multiplicity":"append"}
 	]
-},
+}
 }
