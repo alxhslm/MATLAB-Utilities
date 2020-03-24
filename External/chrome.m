@@ -6,7 +6,7 @@ end
 if strcmp(computer,'PCWIN64')
     exe = '"C:\Program Files (x86)\Google\Chrome\Application\Chrome.exe"';
 elseif strcmp(computer,'MACI64')
-    exe = 'open -a /Applications/GoogleChrome.app';
+    exe = 'open -a /Applications/Google\ Chrome.app/';
 end
 
-system([exe ' ' url]);
+system([exe ' "' url '"']);
