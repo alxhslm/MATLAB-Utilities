@@ -1,2 +1,2 @@
-function loc = sharepointroot
-loc = fullfile(usrroot,'Imperial College London', 'Structural Dynamics - ARES');
+function loc = sharepointroot(type)
+loc = fullfile(usrroot,'Imperial College London', sprintf('Structural Dynamics - %s',type));
