@@ -1,15 +1,18 @@
-function hLeg = suplegend(ax,hLine,labels,loc,varargin)
+function [hLeg,axTemp] = suplegend(ax,hLine,labels,loc,varargin)
 ax = flipud(ax);
 fig = get(ax(1),'parent');
+ax_units = ax(1).Units;
 set(ax(:),'units','pixels')
 
 %% Create dummy axes and create the legend
-axTemp = axes(fig,'Units','pixels');
+axTemp = axes(fig,'Units','pixels','Visible','off');
 hold on
 for i = 1:length(hLine)
     hTemp(i) = copyobj(hLine(i),axTemp);
+    set(hTemp(i),'XData',get(hTemp(i),'XData')+NaN);
 end
 hLeg = legend(axTemp,hTemp,labels,'Location',[loc 'Outside'],varargin{:});
+leg_units = hLeg.Units;
 drawnow
 
 %% adjust figure size to fit legend
@@ -41,10 +44,6 @@ posTR = get(ax(end,end),'Position');
 posAx = [posBL(1:2) posTR(1:2)+posTR(3:4)-posBL(1:2)];
 set(axTemp,'Position',posAx)
 
-set(ax(:),'units','Normalized')
-set(axTemp(:),'units','Normalized')
-set(hLeg,'Units','Normalized')
-
 %centre legend
 leg_pos = get(hLeg,'Position');
 posAx = get(axTemp,'Position');
@@ -54,12 +53,12 @@ switch loc
     case {'North','South'}
         leg_pos(1) = posAx(1) + (posAx(3) - leg_pos(3))/2;
 end
+set(hLeg,'Position',leg_pos)
 
-%% Create new legend linked to the actual axis
-delete(axTemp);
-axLeg = get(hLine(1),'Parent');
-hLeg = legend(axLeg,hLine,labels,'Units','Normalized','Position',leg_pos,varargin{:});
-drawnow
+%reset original units
+set(ax(:),'units',ax_units)
+set(axTemp(:),'units',ax_units)
+set(hLeg,'Units',leg_units)
 
 function mvud(ax,len)
 for i = 1:numel(ax)
