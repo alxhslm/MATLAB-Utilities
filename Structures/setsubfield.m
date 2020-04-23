@@ -1,3 +1,2 @@
-function S = setsubfield(S,fields,v)
-    f = split(fields,'.')';
-    S = setfield(S,f{:},v);
+function S = setsubfield(S,fields,v)%#ok
+eval(sprintf('S.%s = v;',fields));

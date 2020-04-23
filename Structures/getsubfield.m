@@ -1,3 +1,2 @@
-function s = getsubfield(S,fields)
-f = split(fields,'.')';
-s = getfield(S,f{:});
+function s = getsubfield(S,fields) %#ok
+s = eval(sprintf('S.%s;',fields));
