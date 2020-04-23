@@ -1,3 +1,16 @@
-function R = rodrigues(theta)
-R = [cos(theta) sin(theta)
-    -sin(theta) cos(theta)];
+function R = rodrigues(axis,theta)
+
+switch axis
+    case 'x'
+        R = [1      0           0; 
+             0  cos(theta) -sin(theta);
+             0  sin(theta)  cos(theta)];
+    case 'y'
+        R = [cos(theta)  0  sin(theta); 
+                0      	 1      0;
+            -sin(theta)  0  cos(theta)];
+    case 'z'
+        R = [cos(theta) -sin(theta) 0; 
+             sin(theta)  cos(theta) 0;
+                   0        0       1];
+end
