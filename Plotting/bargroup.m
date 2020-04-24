@@ -64,7 +64,11 @@ else
 end
 
 N = size(y,2);
-dx = min(diff(x));
+if length(x) > 1
+    dx = min(diff(x));
+else
+    dx = 1;
+end
 dg = P.groupwidth / N * dx;
 
 xd = (1:N); 
