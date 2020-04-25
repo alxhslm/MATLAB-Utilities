@@ -15,7 +15,7 @@ end
 if strcmp(computer,'PCWIN64')
     exe = '"C:\Program Files\Notepad++\notepad++.exe"';
 elseif strcmp(computer,'MACI64')
-    exe = 'open -a /Applications/TextWrangler.app';
+    exe = 'open -a /Applications/TextMate.app';
 end
 
 system([exe ' ' files]);
