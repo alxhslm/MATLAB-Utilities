@@ -23,7 +23,7 @@ function LabviewXmlStruct = parseLabviewXML(filepath)
 % This is the case for both real and complex single and double precision
 % floating point numbers. Extended precision real and complex
 % floating-point numbers are imported as strings because there is no
-% numeric equivalent in MATLAB®. Fixed-point numbers are imported as a
+% numeric equivalent in MATLABï¿½. Fixed-point numbers are imported as a
 % structure which contains word and integer length as doubles, the signed
 % flag as logical, value, minimum and maximum as structs containing a
 % negative flag as logical and the value as a uint64 (independend of the
@@ -36,7 +36,7 @@ function LabviewXmlStruct = parseLabviewXML(filepath)
 %
 % Timestamps are converted to datetime structures with TimeZone set to UTC.
 % Please note that during this conversion precision is lost because the
-% datetime structure cannot resolve the attosecond precision of LabVIEW™
+% datetime structure cannot resolve the attosecond precision of LabVIEWï¿½
 % timestamps.
 % 
 % Text/menu rings are imported as their representation since the "Flatten
@@ -85,13 +85,13 @@ function LabviewXmlStruct = parseLabviewXML(filepath)
 % 
 % Version 1.2.0.1
 %
-% Tested with LabVIEW™ software version 12.0.1f5, 15.0 and
-% MATLAB® version R2016a/9.0, R2017b/9.3.
+% Tested with LabVIEWï¿½ software version 12.0.1f5, 15.0 and
+% MATLABï¿½ version R2016a/9.0, R2017b/9.3.
 % 
 % MATLAB is a registered trademark of The MathWorks, Inc.,
 % LabVIEW is a trademark of National Instruments.
 %
-% Copyright 2019, Tilman Raphael Schröder <tilman.schroeder@uni-due.de>
+% Copyright 2019, Tilman Raphael Schrï¿½der <tilman.schroeder@uni-due.de>
 	[ fileId, errmsg ] = fopen(filepath, 'r');
 	assert(fileId > -1, errmsg);
 	cleanupObj = onCleanup(@() fclose(fileId));
@@ -129,6 +129,7 @@ end
 
 function name = parseNameTag(fileId)
 	name = convertSpecialChars(parseTag(fgetltrim(fileId), fileId, '<Name>', '</Name>'));
+    name = strtrim(name);
 end
 
 function NumElts = parseNumEltsTag(fileId)
@@ -372,9 +373,9 @@ function name = createLegalStructFieldName(name)
 	name = replace(name, ']', '_');
 	name = replace(name, '@', '_at_');
 	name = replace(name, '-', '_dash_');
-	name = replace(name, 'ä', 'ae');
-	name = replace(name, 'ö', 'oe');
-	name = replace(name, 'ü', 'ue');
+	name = replace(name, 'ï¿½', 'ae');
+	name = replace(name, 'ï¿½', 'oe');
+	name = replace(name, 'ï¿½', 'ue');
 	name = regexprep(name, '\W', '_');
 	name = regexprep(name, '^[^a-zA-Z]', 'a');
 	name = matlab.lang.makeValidName(name, 'ReplacementStyle', 'hex');
