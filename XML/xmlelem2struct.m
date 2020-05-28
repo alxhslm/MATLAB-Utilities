@@ -1,11 +1,11 @@
-function S = loadXMLElement(Element)
+function S = xmlelem2struct(Element)
 f = fieldnames(Element);
 f = f(~strcmp(f,'Attributes'));
 for i = 1:length(f)
     SubElem = Element.(f{i});
     if iscell(SubElem)
         for j = 1:length(SubElem)
-            S.(f{i})(j,1) = loadXMLElement(SubElem{j});
+            S.(f{i})(j,1) = xmlelem2struct(SubElem{j});
         end
     elseif isfield(SubElem,'Text')
         [number, bOK] = str2num(SubElem.Text);
@@ -15,9 +15,17 @@ for i = 1:length(f)
             S.(f{i}) = SubElem.Text;
         end
     else
-        S.(f{i}) = loadXMLElement(SubElem);
+        S.(f{i}) = xmlelem2struct(SubElem);
     end
 end
 if isfield(Element,'Attributes')
-    S = structmerge(S,Element.Attributes);
+    Attr = Element.Attributes;
+    f = fieldnames(Attr);
+    for i = 1:length(f)
+        [number, bOK] = str2num(Attr.(f{i}));
+        if bOK
+            Attr.(f{i}) = number;
+        end
+    end
+    S = structmerge(S,Attr);
 end
