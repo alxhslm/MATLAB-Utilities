@@ -5,6 +5,7 @@ set(ax(:),'units','pixels')
 
 %% Create dummy axes and create the legend
 axTemp = axes(fig,'Units','pixels');
+uistack(axTemp,'bottom')
 hold on
 hTitle = title(axTemp,str,varargin{:});
 drawnow

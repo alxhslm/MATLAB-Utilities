@@ -6,6 +6,7 @@ set(ax(:),'units','pixels')
 
 %% Create dummy axes and create the legend
 axTemp = axes(fig,'Units','pixels','Visible','off');
+uistack(axTemp,'bottom')
 hold on
 for i = 1:length(hLine)
     hTemp(i) = copyobj(hLine(i),axTemp);
