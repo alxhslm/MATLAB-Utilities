@@ -24,8 +24,12 @@ fig_pos([1 3]) = fig_pos([1 3]) + dw*[-0.5 1];
 fig_pos([2 4]) = fig_pos([2 4]) + dh*[-0.5 1];
 set(fig,'Position',fig_pos);
 
-mvlr(ax,dw/2);
-mvud(ax,dh/2);
+if strcmp(loc,'West')
+    mvlr(ax,dw);
+end
+if strcmp(loc,'South')
+    mvud(ax,dh);
+end
 
 posBL = get(ax(1,1),'Position');
 posTR = get(ax(end,end),'Position');
