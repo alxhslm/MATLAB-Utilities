@@ -14,22 +14,26 @@ for i = 1:length(hLine)
 end
 hLeg = legend(axTemp,hTemp,labels,'Location',[loc 'Outside'],varargin{:});
 leg_units = hLeg.Units;
+hTitle = title(axTemp,'temp');
 drawnow
 
 %% adjust figure size to fit legend
 set(hLeg,'Units','pixels')
 leg_pos = get(hLeg,'Position');
 
+set(hTitle,'Units','pixels')
+tit_pos = get(hTitle,'Extent');
+
 set(fig(:),'units','pixels')
 fig_pos = get(fig,'position');
 
 switch loc
     case  {'East' 'West'}
-        dw = leg_pos(3)+20;
-        dh = max(leg_pos(4)+20,fig_pos(4))-fig_pos(4);
+        dw = leg_pos(3)+tit_pos(3);
+        dh = max([leg_pos(4),fig_pos(4),tit_pos(4)])-fig_pos(4);
     case {'North','South'}
-        dh = leg_pos(4)+20;
-        dw = max(leg_pos(3)+20,fig_pos(3))-fig_pos(3);
+        dh = leg_pos(4)+tit_pos(4);
+        dw = max([leg_pos(3),fig_pos(3),tit_pos(3)])-fig_pos(3);
 end
 
 fig_pos([1 3]) = fig_pos([1 3]) + dw*[-0.5 1];
@@ -37,11 +41,13 @@ fig_pos([2 4]) = fig_pos([2 4]) + dh*[-0.5 1];
 set(fig,'Position',fig_pos);
 
 if strcmp(loc,'West')
-    mvlr(ax,dw);
+    mvlr(ax,leg_pos(3));
 end
 if strcmp(loc,'South')
-    mvud(ax,dh);
+    mvud(ax,leg_pos(4));
 end
+
+delete(hTitle);
 
 posBL = get(ax(1,1),'Position');
 posTR = get(ax(end,end),'Position');
