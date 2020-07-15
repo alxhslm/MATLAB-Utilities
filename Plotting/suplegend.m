@@ -8,11 +8,8 @@ set(ax(:),'units','pixels')
 axTemp = axes(fig,'Units','pixels','Visible','off');
 uistack(axTemp,'bottom')
 hold on
-for i = 1:length(hLine)
-    hTemp(i) = copyobj(hLine(i),axTemp);
-    set(hTemp(i),'XData',get(hTemp(i),'XData')+NaN);
-end
-hLeg = legend(axTemp,hTemp,labels,'Location',[loc 'Outside'],varargin{:});
+
+hLeg = legend(axTemp,hLine,labels,'Location',[loc 'Outside'],varargin{:});
 leg_units = hLeg.Units;
 hTitle = title(axTemp,'temp');
 drawnow
