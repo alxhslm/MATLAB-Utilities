@@ -46,7 +46,13 @@ for j = 1:N
                     a = [a strcat([ '.' com{i}],tmp)];
                 end
             else
-                if iscell(B(j).(com{i})) && iscell(A(j).(com{i}))
+                if ~all(size(B(j).(com{i})) == size(A(j).(com{i})))
+                    if N > 1
+                        a{end+1} = sprintf('(%d).%s',j,com{i});
+                    else
+                        a{end+1} = ['.' com{i}];
+                    end
+                elseif iscell(B(j).(com{i})) && iscell(A(j).(com{i}))
                     tmp = structdiff(A(j).(com{i}), B(j).(com{i}));
                     if N > 1
                         a = [a strcat(sprintf('(%d).%s',j,com{i}) ,tmp)];
