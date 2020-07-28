@@ -1,4 +1,4 @@
-function hTitle = suptitle(ax,str,varargin)
+function hYlabel = supylabel(ax,str,varargin)
 ax = flipud(ax);
 fig = ax(1).Parent;
 
@@ -8,7 +8,7 @@ fig_units = fig.Units;
 [ax.Units] = deal('pixels');
 fig.Units = 'pixels';
 
-%% Create dummy axes and create the title
+%% Create dummy axes and create the label
 U = get(fig,'UserData');
 if ~isfield(U,'supAxis')
     supax = supaxis(ax);
@@ -18,24 +18,23 @@ else
     supax_units = supax.Units;
     supax.Units = 'pixels';
 end
-
 supax.Visible = 'on';
 
-hTitle = title(supax,sprintf('%s\n',str));
+hYlabel = ylabel(supax,sprintf('%s\n',str));
 if ~isempty(varargin)
-    set(hTitle,varargin{:});
+    set(hYlabel,varargin{:});
 end
-title_units = hTitle.Units;
-hTitle.Units = 'pixels';
+label_units = hYlabel.Units;
+hYlabel.Units = 'pixels';
 setsupaxissize(ax,supax)
 
-%% adjust figure size to fit title
+%% adjust figure size to fit label
 fig_pos = fig.Position;
 ax_pos = supax.Position;
-title_pos = hTitle.Extent;
+label_pos = hYlabel.Extent;
 
-dh = ax_pos(2)+title_pos(2)+title_pos(4)-fig_pos(4);
-dw = max(title_pos(3),fig_pos(3))-fig_pos(3);
+dw = -(ax_pos(1)+label_pos(1));
+dh = max(label_pos(4),fig_pos(4))-fig_pos(4);
 
 if dw > 0
     dw = dw + 20;
@@ -44,11 +43,12 @@ end
 
 if dh > 0
     dh = dh + 10;
-    fig_pos([2 4]) = fig_pos([2 4]) + dh*[0 1];
+    fig_pos([2 4]) = fig_pos([2 4]) + dh*[-0.5 1];
 end
 fig.Position = fig_pos;
 
-mvlr(ax,dw/2);
+mvlr(ax,dw);
+mvud(ax,dh/2);
 setsupaxissize(ax,supax)
 
 %reset original units
@@ -56,16 +56,23 @@ setsupaxissize(ax,supax)
 fig.Units = fig_units;
 supax.Units = supax_units;
 
-tit_pos = hTitle.Position;
-hTitle.Visible = 'on';
+label_pos = hYlabel.Position;
+hYlabel.Visible = 'on';
 supax.Visible = 'off';
 drawnow
 
-hTitle.Position = tit_pos;
-hTitle.Units = title_units;
+hYlabel.Position = label_pos;
+hYlabel.Units = label_units;
 
 U.supAxis = supax;
 set(fig,'UserData',U);
+
+function mvud(ax,len)
+for i = 1:numel(ax)
+    pos = get(ax(i),'Position');
+    pos(2) = pos(2) + len;
+    set(ax(i),'Position',pos);
+end
 
 function mvlr(ax,len)
 for i = 1:numel(ax)

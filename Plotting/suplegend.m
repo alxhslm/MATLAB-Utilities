@@ -1,71 +1,92 @@
-function [hLeg,axTemp] = suplegend(ax,hLine,labels,loc,varargin)
+function hLeg = suplegend(ax,hLine,labels,loc,varargin)
 ax = flipud(ax);
-fig = get(ax(1),'parent');
+fig = ax(1).Parent;
+
 ax_units = ax(1).Units;
-set(ax(:),'units','pixels')
+fig_units = fig.Units;
+
+[ax.Units] = deal('pixels');
+fig.Units = 'pixels';
 
 %% Create dummy axes and create the legend
-axTemp = axes(fig,'Units','pixels','Visible','off');
-uistack(axTemp,'bottom')
-hold on
+U = get(fig,'UserData');
+if ~isfield(U,'supAxis')
+    supax = supaxis(ax);
+    supax_units = ax_units;
+else
+    supax = U.supAxis;
+    supax_units = supax.Units;
+    supax.Units = 'pixels';
+end
+supax.Visible = 'on';
 
-hLeg = legend(axTemp,hLine,labels,'Location',[loc 'Outside'],varargin{:});
+hLeg = legend(supax,hLine,labels,'Location',[loc 'Outside']);
+if ~isempty(varargin)
+    set(hLeg,varargin{:});
+end
 leg_units = hLeg.Units;
-hTitle = title(axTemp,'temp');
-drawnow
+hLeg.Units = 'pixels';
+setsupaxissize(ax,supax);
 
 %% adjust figure size to fit legend
-set(hLeg,'Units','pixels')
-leg_pos = get(hLeg,'Position');
-
-set(hTitle,'Units','pixels')
-tit_pos = get(hTitle,'Extent');
-
-set(fig(:),'units','pixels')
-fig_pos = get(fig,'position');
+fig_pos = fig.Position;
+leg_pos = hLeg.Position;
 
 switch loc
-    case  {'East' 'West'}
-        dw = leg_pos(3)+tit_pos(3);
-        dh = max([leg_pos(4),fig_pos(4),tit_pos(4)])-fig_pos(4);
-    case {'North','South'}
-        dh = leg_pos(4)+tit_pos(4);
-        dw = max([leg_pos(3),fig_pos(3),tit_pos(3)])-fig_pos(3);
+    case  'East'
+        dw = leg_pos(1)+leg_pos(3)-fig_pos(3);
+        dh = max([leg_pos(4),fig_pos(4)])-fig_pos(4);
+    case  'West'
+        dw = -leg_pos(1);
+        dh = max([leg_pos(4),fig_pos(4)])-fig_pos(4);
+    case 'South'
+        dh = -leg_pos(2);
+        dw = max([leg_pos(3),fig_pos(3)])-fig_pos(3);
+    case 'North'
+        dh = leg_pos(2)+leg_pos(4)-fig_pos(4);
+        dw = max([leg_pos(3),fig_pos(3)])-fig_pos(3);
 end
 
-fig_pos([1 3]) = fig_pos([1 3]) + dw*[-0.5 1];
-fig_pos([2 4]) = fig_pos([2 4]) + dh*[-0.5 1];
-set(fig,'Position',fig_pos);
-
-if strcmp(loc,'West')
-    mvlr(ax,leg_pos(3));
+if dw > 0
+    dw = dw + 10;
+    fig_pos([1 3]) = fig_pos([1 3]) + dw*[-0.5 1];
 end
-if strcmp(loc,'South')
-    mvud(ax,leg_pos(4));
+if dh > 0
+    dh = dh + 10;
+    fig_pos([2 4]) = fig_pos([2 4]) + dh*[-0.5 1];
 end
+fig.Position = fig_pos;
 
-delete(hTitle);
-
-posBL = get(ax(1,1),'Position');
-posTR = get(ax(end,end),'Position');
-posAx = [posBL(1:2) posTR(1:2)+posTR(3:4)-posBL(1:2)];
-set(axTemp,'Position',posAx)
-
-%centre legend
-leg_pos = get(hLeg,'Position');
-posAx = get(axTemp,'Position');
 switch loc
-    case  {'East' 'West'}
-        leg_pos(2) = posAx(2) + (posAx(4) - leg_pos(4))/2;
-    case {'North','South'}
-        leg_pos(1) = posAx(1) + (posAx(3) - leg_pos(3))/2;
+    case  'East'
+        mvud(ax,dh/2);
+    case  'West'
+        mvud(ax,dh/2);
+        mvlr(ax,dw);
+    case 'South'
+        mvlr(ax,dw/2);
+        mvud(ax,dh);
+    case 'North'
+        mvlr(ax,dw/2);
 end
-set(hLeg,'Position',leg_pos)
+setsupaxissize(ax,supax)
 
 %reset original units
-set(ax(:),'units',ax_units)
-set(axTemp(:),'units',ax_units)
-set(hLeg,'Units',leg_units)
+[ax.Units] = deal(ax_units);
+fig.Units = fig_units;
+supax.Units = supax_units;
+
+leg_pos = hLeg.Position;
+hLeg.Visible = 'on';
+supax.Visible = 'off';
+drawnow
+
+hLeg.Position = leg_pos;
+hLeg.Units = leg_units;
+
+U.supAxis = supax;
+set(fig,'UserData',U);
+
 
 function mvud(ax,len)
 for i = 1:numel(ax)
