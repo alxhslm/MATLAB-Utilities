@@ -22,7 +22,16 @@ supax.Visible = 'on';
 
 hLeg = legend(supax,hLine,labels,'Location',[loc 'Outside']);
 if ~isempty(varargin)
+    props = varargin(1:2:end);
+    iTitle = find(strcmpi(props,'title'));
+    if ~isempty(iTitle)
+        leg_title = varargin(2*iTitle);
+        varargin(2*(iTitle-1) + (1:2)) = []; 
+    else
+        leg_title = '';
+    end
     set(hLeg,varargin{:});
+    hLeg.Title.String = leg_title;
 end
 leg_units = hLeg.Units;
 hLeg.Units = 'pixels';
