@@ -3,5 +3,9 @@ if nargin < 2
     fields = fieldnames(S);
 end
 for i = 1:length(fields)
-     V.(fields{i}) = cat(1,S(:).(fields{i}));
+    if ischar(S(1).(fields{i}))
+        V.(fields{i}) = {S(:).(fields{i})}';
+    else
+        V.(fields{i}) = cat(1,S(:).(fields{i}));
+    end
 end
