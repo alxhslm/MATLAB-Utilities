@@ -20,6 +20,7 @@ else
 end
 supax.Visible = 'on';
 
+drawnow
 hLeg = legend(supax,hLine,labels,'Location',[loc 'Outside']);
 if ~isempty(varargin)
     props = varargin(1:2:end);
