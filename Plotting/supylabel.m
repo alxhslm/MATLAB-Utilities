@@ -39,16 +39,16 @@ dh = max(label_pos(4),fig_pos(4))-fig_pos(4);
 if dw > 0
     dw = dw + 20;
     fig_pos([1 3]) = fig_pos([1 3]) + dw*[-0.5 1];
+    mvlr(ax,dw);
 end
 
 if dh > 0
     dh = dh + 10;
     fig_pos([2 4]) = fig_pos([2 4]) + dh*[-0.5 1];
+    mvud(ax,dh/2);
 end
 fig.Position = fig_pos;
 
-mvlr(ax,dw);
-mvud(ax,dh/2);
 setsupaxissize(ax,supax)
 
 %reset original units
