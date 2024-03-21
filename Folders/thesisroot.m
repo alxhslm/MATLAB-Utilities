@@ -1,2 +1,2 @@
 function loc = thesisroot
-loc = fullfile(dropboxroot,'Apps','Overleaf','Thesis');
+loc = fullfile(usrroot,'Documents', 'LaTeX', 'phd-thesis');
